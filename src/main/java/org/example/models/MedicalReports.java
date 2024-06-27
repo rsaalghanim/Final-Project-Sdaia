@@ -56,7 +56,7 @@ public class MedicalReports {
         medReportsId = rs.getInt("medReportsId");
         patientId = rs.getInt("patientId");
         details = rs.getString("details");
-        reportDate = (rs.getString("reportDate"));
+        reportDate = rs.getString("reportDate");
     }
 
     @Override

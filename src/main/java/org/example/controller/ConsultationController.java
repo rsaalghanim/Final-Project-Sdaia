@@ -12,19 +12,23 @@ import org.example.models.Consultations;
 import java.net.URI;
 import java.util.ArrayList;
 
-
+//controller receive all requests
 @Path("/CONSULTATIONS")
 public class ConsultationController {
 
+    //create object from DAO class
     ConsultationDAO dao = new ConsultationDAO();
 
 
     @Context UriInfo uriInfo;
     @Context HttpHeaders headers;
 
+    //GET annotation for all consultation
         @GET
         @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON,"text/csv"})
         public Response getAllConsults(
+                //BeanParam hss object that contains more than on parameter
+                //نجمع كل البراميترز داخل الكلاس ConsultFilterDto ونبعث الاوبجت filter
                 @BeanParam ConsultFilterDto filter
                 ) {
 
@@ -44,9 +48,6 @@ public class ConsultationController {
                 }
 
                 return Response
-//                    .ok()
-//                    .entity(jobs)
-//                    .type(MediaType.APPLICATION_JSON)
                         .ok(cons, MediaType.APPLICATION_JSON)
                         .build();
             } catch (Exception e) {
@@ -59,6 +60,7 @@ public class ConsultationController {
         @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, "text/csv"})
 
         public Response getConsults(
+                //receive value from the path consultId
                 @PathParam("consultId") int consultId) {
 
             try {
@@ -74,11 +76,7 @@ public class ConsultationController {
 //
                 }
 
-//                JobDto dto = new JobDto();
-//                dto.setJob_id(jobs.getJob_id());
-//                dto.setJob_title(jobs.getJob_title());
-//                dto.setMin_salary(jobs.getMin_salary());
-//                dto.setMax_salary(jobs.getMax_salary());
+
                 ConsultationsDto dto = ConsultationMapper.INSTANCE.toConsultDto(cons);
               addLinks(dto);
 
@@ -91,10 +89,10 @@ public class ConsultationController {
 
         private void addLinks (ConsultationsDto dto){
             URI selfUri = uriInfo.getAbsolutePath();
-            URI empsUri = uriInfo.getAbsolutePathBuilder().path(ConsultationController.class).build();
+            URI empsUri = uriInfo.getAbsolutePathBuilder().path(DoctorController.class).build();
 
             dto.addLink(selfUri.toString(), "self");
-            dto.addLink(empsUri.toString(),"consultations");
+            dto.addLink(empsUri.toString(),"DOCTORS");
         }
 
         @DELETE
@@ -132,10 +130,14 @@ public class ConsultationController {
 
         @PUT
         @Path("{consultId}")
+        //updated attributes will in object cons
+        //اضفنا  consultId عشان نوصل للعنصر
         public void updateConsult(@PathParam("consultId") int consultId, Consultations cons) {
 
             try {
+                //passing the variable consultId to the object cons
                 cons.setConsultId(consultId);
+                //passing the cons object to update
                 dao.updateConsult(cons);
             } catch (Exception e) {
                 throw new RuntimeException(e);

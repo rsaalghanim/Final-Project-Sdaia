@@ -90,7 +90,7 @@ public class SchedulesDto {
         doctorId = rs.getInt("doctorId");
         startTime = rs.getString("startTime");
         endTime = rs.getString("endTime");
-        isAvailable = Boolean.parseBoolean(rs.getString("isAvailable"));
+        isAvailable = Boolean.parseBoolean(String.valueOf(rs.getBoolean("isAvailable")));
 
         ResultSetMetaData mt = rs.getMetaData();
 //        if(mt.getColumnCount() > 10) {

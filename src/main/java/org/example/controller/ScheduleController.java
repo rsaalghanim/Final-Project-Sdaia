@@ -34,9 +34,6 @@ public class ScheduleController {
                             .type(MediaType.APPLICATION_XML)
                             .build();
 
-              //  return dao.selectAllJobs(minsal, limit, offset);
-                //return dao.selectAllEmps(filter);
-                //return dao.selectAllEmps();
                   }
                 else if(headers.getAcceptableMediaTypes().contains(MediaType.valueOf("text/csv"))) {
                     return Response

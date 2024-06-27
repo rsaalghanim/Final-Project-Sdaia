@@ -7,10 +7,10 @@ import org.example.dto.ErrorMessage;
 //import org.glassfish.jersey.spi.ExceptionMapper;
 
 
-@Provider
+@Provider //يعني الكلاس هذا راح يوفر ريسبونس
 public class DataNotFoundExceptionMapper implements ExceptionMapper<DataNotFoundException> {
     @Override
-    public Response toResponse(DataNotFoundException exception) {
+    public Response toResponse(DataNotFoundException exception) {//الميثود تستقبل الاكسبشن وترجع ريسبونس
         ErrorMessage err = new ErrorMessage();
         //err.setErrorContent(exe());
         err.setErrorContent(exception.getMessage());
@@ -19,7 +19,7 @@ public class DataNotFoundExceptionMapper implements ExceptionMapper<DataNotFound
 
         return Response
                 .status(Response.Status.NOT_FOUND)
-                .entity(err)
+                .entity(err)//انتيتي البودي اللي يطلع بالرسبونس اللي بالبوستمان
                 .build();
     }
 

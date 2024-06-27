@@ -13,9 +13,10 @@ public class ScheduleDAO {
     private static final String SELECT_ONE_SCHED = "select * from employees where employee_id = ?";
     private static final String SELECT_SCHED_WITH_DOC = "select * from SCHEDULES where doctorId = ?";
     private static final String SELECT_SCHED_WITH_AVAILABLE = "select * from SCHEDULES where isAvailable = ?";
-    private static final String SELECT_SCHED_WITH_DOC_AVAILABLE = "select * from SCHEDULES where doctorId = ? order by isAvailable docAvailable ?";
+    private static final String SELECT_SCHED_WITH_DOC_AVAILABLE = "select * from SCHEDULES where doctorId = ? AND isAvailable = ?";
     private static final String SELECT_ALL_SCHEDS = "select * from SCHEDULES";
-    private static final String UPDATE_SCHED = "update SCHEDULES set startTime = ?, endTime = ? where schedulesId = ?";
+    private static final String UPDATE_SCHED = "update SCHEDULES set isAvailable = ? where schedulesId = ?";
+   // private static final String UPDATE_SCHED = "update SCHEDULES set startTime = ?, endTime = ? where doctorId = ?";
     private static final String DELETE_SCHED = "delete from SCHEDULES where schedulesId = ?";
 
 
@@ -25,8 +26,8 @@ public class ScheduleDAO {
         PreparedStatement st = conn.prepareStatement(INSERT_SCHED);
        // st.setInt(1, s.getSchedulesId());
         st.setInt(1, s.getDoctorId());
-        st.setString(2, s.getStartTime().toString());
-        st.setString(3, s.getEndTime().toString());
+        st.setString(2, s.getStartTime());
+        st.setString(3, s.getEndTime());
         st.setBoolean(4, s.isAvailable());
         st.executeUpdate();
     }
@@ -35,9 +36,10 @@ public class ScheduleDAO {
         Class.forName("org.sqlite.JDBC");
         Connection conn = DriverManager.getConnection(URL);
         PreparedStatement st = conn.prepareStatement(UPDATE_SCHED);
-        st.setInt(3, s.getSchedulesId());
-        st.setString(1, s.getStartTime().toString());
-        st.setString(2, s.getEndTime().toString());
+        st.setInt(2, s.getSchedulesId());
+      //  st.setString(1, s.getStartTime().toString());
+      //  st.setString(2, s.getEndTime().toString());
+        st.setBoolean(1, s.isAvailable());
         st.executeUpdate();
     }
 

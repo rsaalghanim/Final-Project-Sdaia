@@ -1,5 +1,5 @@
 package org.example.dto;
-
+//DTO بينات تنرسل بين السيرفر والكلاينت
 import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlElementWrapper;
 import jakarta.xml.bind.annotation.XmlRootElement;
@@ -118,7 +118,7 @@ public class ConsultationsDto {
         consultId = rs.getInt("consultId");
         doctorId = rs.getInt("doctorId");
         patientId = rs.getInt("patientId");
-        requestTime = (rs.getString("requestTime"));
+        requestTime = rs.getString("requestTime");
         consultationTime = rs.getString("consultationTime");
         status = rs.getString("status");
         diagnosis = rs.getString("diagnosis");

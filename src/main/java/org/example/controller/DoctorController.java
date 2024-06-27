@@ -141,6 +141,10 @@ public class DoctorController {
                 throw new RuntimeException(e);
             }
         }
+//        @Path("doctorId/SCHEDULES")
+//    public ScheduleController getScheduleController() {
+//            return new ScheduleController();
+//        }
 
 
 
