@@ -1,12 +1,12 @@
 package org.example.dto;
-//DTO بينات تنرسل بين السيرفر والكلاينت
+
 import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlElementWrapper;
 import jakarta.xml.bind.annotation.XmlRootElement;
 
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 @XmlRootElement
@@ -14,8 +14,8 @@ public class ConsultationsDto {
    private int consultId ;
     private int doctorId ;
    private int patientId ;
-   private String requestTime;
-   private String consultationTime ;
+   private LocalDateTime requestTime;
+   private LocalDateTime consultationTime ;
    private String status ;
    private String diagnosis;
    private int rateDoctor ;
@@ -25,7 +25,7 @@ public class ConsultationsDto {
     public ConsultationsDto() {
     }
 
-    public ConsultationsDto(int consultId, int doctorId, int patientId, String requestTime, String consultationTime, String status, String diagnosis, int rateDoctor) {
+    public ConsultationsDto(int consultId, int doctorId, int patientId, LocalDateTime requestTime, LocalDateTime consultationTime, String status, String diagnosis, int rateDoctor) {
         this.consultId = consultId;
         this.doctorId = doctorId;
         this.patientId = patientId;
@@ -60,19 +60,19 @@ public class ConsultationsDto {
         this.patientId = patientId;
     }
 
-    public String getRequestTime() {
+    public LocalDateTime getRequestTime() {
         return requestTime;
     }
 
-    public void setRequestTime(String requestTime) {
+    public void setRequestTime(LocalDateTime requestTime) {
         this.requestTime = requestTime;
     }
 
-    public String getConsultationTime() {
+    public LocalDateTime getConsultationTime() {
         return consultationTime;
     }
 
-    public void setConsultationTime(String consultationTime) {
+    public void setConsultationTime(LocalDateTime consultationTime) {
         this.consultationTime = consultationTime;
     }
 
@@ -118,8 +118,12 @@ public class ConsultationsDto {
         consultId = rs.getInt("consultId");
         doctorId = rs.getInt("doctorId");
         patientId = rs.getInt("patientId");
-        requestTime = rs.getString("requestTime");
-        consultationTime = rs.getString("consultationTime");
+        requestTime = LocalDateTime.parse(rs.getString("requestTime"));
+        if(rs.getString("consultationTime").equals("")){
+            consultationTime = null;
+        }else {
+            consultationTime = LocalDateTime.parse(rs.getString("consultationTime"));
+        }
         status = rs.getString("status");
         diagnosis = rs.getString("diagnosis");
         rateDoctor=rs.getInt("rateDoctor");

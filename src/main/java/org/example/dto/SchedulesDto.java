@@ -7,6 +7,7 @@ import jakarta.xml.bind.annotation.XmlRootElement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 
@@ -15,8 +16,8 @@ public class SchedulesDto {
 
     private int schedulesId ;
     private int doctorId ;
-    private String startTime ;
-    private String endTime ;
+    private LocalDateTime startTime ;
+    private LocalDateTime endTime ;
     private boolean isAvailable ;
 
     private ArrayList<LinkDto> links = new ArrayList<>();
@@ -25,7 +26,7 @@ public class SchedulesDto {
     public SchedulesDto() {
     }
 
-    public SchedulesDto(int schedulesId, int doctorId, String startTime, String endTime, boolean isAvailable) {
+    public SchedulesDto(int schedulesId, int doctorId, LocalDateTime startTime, LocalDateTime endTime, boolean isAvailable) {
         this.schedulesId = schedulesId;
         this.doctorId = doctorId;
         this.startTime = startTime;
@@ -49,19 +50,19 @@ public class SchedulesDto {
         this.doctorId = doctorId;
     }
 
-    public String getStartTime() {
+    public LocalDateTime getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(String startTime) {
+    public void setStartTime(LocalDateTime startTime) {
         this.startTime = startTime;
     }
 
-    public String getEndTime() {
+    public LocalDateTime getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(String endTime) {
+    public void setEndTime(LocalDateTime endTime) {
         this.endTime = endTime;
     }
 
@@ -88,8 +89,8 @@ public class SchedulesDto {
     public SchedulesDto(ResultSet rs) throws SQLException {
         schedulesId = rs.getInt("schedulesId");
         doctorId = rs.getInt("doctorId");
-        startTime = rs.getString("startTime");
-        endTime = rs.getString("endTime");
+        startTime = LocalDateTime.parse(rs.getString("startTime"));
+        endTime = LocalDateTime.parse(rs.getString("endTime"));
         isAvailable = Boolean.parseBoolean(String.valueOf(rs.getBoolean("isAvailable")));
 
         ResultSetMetaData mt = rs.getMetaData();

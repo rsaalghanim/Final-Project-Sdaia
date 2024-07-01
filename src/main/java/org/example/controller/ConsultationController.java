@@ -27,8 +27,6 @@ public class ConsultationController {
         @GET
         @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON,"text/csv"})
         public Response getAllConsults(
-                //BeanParam hss object that contains more than on parameter
-                //نجمع كل البراميترز داخل الكلاس ConsultFilterDto ونبعث الاوبجت filter
                 @BeanParam ConsultFilterDto filter
                 ) {
 
@@ -60,7 +58,6 @@ public class ConsultationController {
         @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, "text/csv"})
 
         public Response getConsults(
-                //receive value from the path consultId
                 @PathParam("consultId") int consultId) {
 
             try {
@@ -75,6 +72,9 @@ public class ConsultationController {
                             .build();
 //
                 }
+
+
+
 
 
                 ConsultationsDto dto = ConsultationMapper.INSTANCE.toConsultDto(cons);

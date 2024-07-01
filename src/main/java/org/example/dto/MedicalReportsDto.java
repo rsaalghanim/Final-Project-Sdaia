@@ -7,6 +7,7 @@ import jakarta.xml.bind.annotation.XmlRootElement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 @XmlRootElement
@@ -15,7 +16,7 @@ public class MedicalReportsDto {
     private int medReportsId;
     private int patientId;
     private String details;
-    private LocalDate reportDate;
+    private LocalDateTime reportDate;
 
     private ArrayList<LinkDto> links = new ArrayList<>();
 
@@ -23,7 +24,7 @@ public class MedicalReportsDto {
     public MedicalReportsDto() {
     }
 
-    public MedicalReportsDto(int medReportsId, int patientId, String details, LocalDate reportDate) {
+    public MedicalReportsDto(int medReportsId, int patientId, String details, LocalDateTime reportDate) {
         this.medReportsId = medReportsId;
         this.patientId = patientId;
         this.details = details;
@@ -54,11 +55,11 @@ public class MedicalReportsDto {
         this.details = details;
     }
 
-    public LocalDate getReportDate() {
+    public LocalDateTime getReportDate() {
         return reportDate;
     }
 
-    public void setReportDate(LocalDate reportDate) {
+    public void setReportDate(LocalDateTime reportDate) {
         this.reportDate = reportDate;
     }
 
@@ -79,7 +80,7 @@ public class MedicalReportsDto {
         medReportsId = rs.getInt("medReportsId");
         patientId = rs.getInt("patientId");
         details = rs.getString("details");
-        reportDate = rs.getDate("reportDate").toLocalDate();
+        reportDate = LocalDateTime.parse(rs.getString("reportDate"));
     }
 
     @Override

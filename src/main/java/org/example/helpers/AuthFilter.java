@@ -6,7 +6,9 @@ import jakarta.ws.rs.container.ContainerRequestFilter;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.ext.Provider;
 //import org.example.dao.DepartmentDAO;
+import org.example.dao.DoctorDAO;
 import org.example.dao.EmployeeDAO;
+import org.example.dao.PatientDAO;
 import org.example.dto.ErrorMessage;
 
 import java.io.IOException;
@@ -16,7 +18,8 @@ import java.util.*;
 @Provider
 public class AuthFilter implements ContainerRequestFilter {
 
-    @Inject EmployeeDAO empdao;
+    @Inject DoctorDAO docdao;
+    @Inject PatientDAO patdao;
     @Override
     public void filter(ContainerRequestContext requestContext) throws IOException {
         if(!requestContext.getUriInfo().getPath().contains("secures")) return;
@@ -27,16 +30,16 @@ public class AuthFilter implements ContainerRequestFilter {
             authHeader = authHeader.replace("Basic ", "");
             authHeader = new String(Base64.getDecoder().decode(authHeader));
             StringTokenizer tokenizer = new StringTokenizer(authHeader, ":");
-            String username = tokenizer.nextToken();
-            String password = tokenizer.nextToken();
+            String user_email = tokenizer.nextToken();
+            String user_password = tokenizer.nextToken();
 
             try {
-                if (empdao.selectEmpLastName(username) != null && password.equals("admin")) {
+                if (docdao.DoctorLogin(user_email,user_password) != null){
+                    return;
+                } else if (patdao.PatientsLogin(user_email,user_password)!= null) {
                     return;
                 }
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            } catch (ClassNotFoundException e) {
+            } catch (Exception e) {
                 throw new RuntimeException(e);
             }
         }

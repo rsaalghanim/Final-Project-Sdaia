@@ -91,10 +91,10 @@ public class DoctorController {
 
         private void addLinks (DoctorDto dto){
             URI selfUri = uriInfo.getAbsolutePath();
-            URI empsUri = uriInfo.getAbsolutePathBuilder().path(DoctorController.class).build();
+            URI empsUri = uriInfo.getAbsolutePathBuilder().path(ScheduleController.class).build();
 
             dto.addLink(selfUri.toString(), "self");
-            dto.addLink(empsUri.toString(),"Doctors");
+            dto.addLink(empsUri.toString(),"Schedules");
         }
 
         @DELETE

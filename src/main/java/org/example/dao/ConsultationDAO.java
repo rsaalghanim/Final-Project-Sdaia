@@ -15,11 +15,12 @@ public class ConsultationDAO {
     private static final String SELECT_ONE_CONSULT = "select * from CONSULTATIONS where consultId = ?";
     private static final String SELECT_CONSULT_WITH_DIAGNOSE = "select * from CONSULTATIONS where diagnosis = ?";
     private static final String SELECT_CONSULT_WITH_PENDING_REQ = "select * from CONSULTATIONS where doctorId = ? AND status = ?";
-    private static final String SELECT_CONSULT_WITH_RATE = "select * from CONSULTATIONS where rateDoctor = ?";
+   // private static final String SELECT_CONSULT_WITH_RATE = "select * from CONSULTATIONS where rateDoctor = ?";
     private static final String SELECT_CONSULT_WITH_STAT = "select * from CONSULTATIONS where status = ?";
     private static final String SELECT_ALL_CONSULT = "select * from CONSULTATIONS";
     private static final String UPDATE_CONSULT = "update CONSULTATIONS set requestTime = ?, consultationTime = ?, status = ?, diagnosis = ?, rateDoctor = ? where consultId = ?";
     private static final String DELETE_CONSULT = "delete from CONSULTATIONS where consultId = ?";
+    private static final String SELECT_RATE = "select doctorId, count(*) from CONSULTATIONS where rateDoctor = ?";
 
 
     public void insertConsult(Consultations c) throws SQLException, ClassNotFoundException {
@@ -65,6 +66,20 @@ public class ConsultationDAO {
         Connection conn = DriverManager.getConnection(URL);
         PreparedStatement st = conn.prepareStatement(SELECT_ONE_CONSULT);
         st.setInt(1, consultId);
+        ResultSet rs = st.executeQuery();
+        if(rs.next()) {
+            return new Consultations(rs);
+        }
+        else {
+            return null;
+        }
+    }
+
+    public Consultations SELECT_RATE(int rateDoctor) throws SQLException, ClassNotFoundException {
+        Class.forName("org.sqlite.JDBC");
+        Connection conn = DriverManager.getConnection(URL);
+        PreparedStatement st = conn.prepareStatement(SELECT_RATE);
+        st.setInt(1, rateDoctor);
         ResultSet rs = st.executeQuery();
         if(rs.next()) {
             return new Consultations(rs);
@@ -129,7 +144,7 @@ public class ConsultationDAO {
             st.setString(1, filter.getPendingReq().toString());
         }
         else if(filter.getRate() != null) {
-            st = conn.prepareStatement(SELECT_CONSULT_WITH_RATE);
+            st = conn.prepareStatement(SELECT_RATE);
             st.setInt(1, filter.getRate());
         }
         else if(filter.getStat() != null) {
@@ -146,6 +161,8 @@ public class ConsultationDAO {
 
         return cons;
     }
+
+
 
 
 

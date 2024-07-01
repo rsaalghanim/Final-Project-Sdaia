@@ -3,6 +3,7 @@ package org.example.dao;
 
 import org.example.dto.DoctorFilterDto;
 import org.example.models.Doctors;
+import org.example.models.Employee;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -19,6 +20,8 @@ public class DoctorDAO {
     private static final String INSERT_DOC = "insert into DOCTORS (name, specialty, email, password, phone) values (?, ?, ?, ?, ?)";
     private static final String UPDATE_DOC = "update DOCTORS set email = ?, specialty = ? where doctorId = ?";
     private static final String DELETE_DOC = "delete from DOCTORS where doctorId = ?";
+   private static final String LOGIN_DOC = "select * from DOCTORS where email = ? AND password = ?";
+
 
     public void insertDoc(Doctors d) throws SQLException, ClassNotFoundException {
         Class.forName("org.sqlite.JDBC");
@@ -126,6 +129,23 @@ public class DoctorDAO {
         }
 
         return docs;
+
+
+    }
+
+    public Doctors DoctorLogin(String docEmail,String password) throws SQLException, ClassNotFoundException {
+        Class.forName("org.sqlite.JDBC");
+        Connection conn = DriverManager.getConnection(URL);
+        PreparedStatement st = conn.prepareStatement(LOGIN_DOC);
+        st.setString(1, docEmail);
+        st.setString(2, password);
+        ResultSet rs = st.executeQuery();
+        if(rs.next()) {
+            return new Doctors(rs);
+        }
+        else {
+            return null;
+        }
     }
 
 }

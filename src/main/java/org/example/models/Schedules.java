@@ -3,19 +3,20 @@ package org.example.models;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 
 public class Schedules {
 
     private int schedulesId ;
     private int doctorId ;
-    private String startTime ;
-    private String endTime ;
+    private LocalDateTime startTime ;
+    private LocalDateTime endTime ;
     private boolean isAvailable ;
 
     public Schedules() {
     }
 
-    public Schedules(int schedulesId, int doctorId, String startTime, String endTime, boolean isAvailable) {
+    public Schedules(int schedulesId, int doctorId, LocalDateTime startTime, LocalDateTime endTime, boolean isAvailable) {
         this.schedulesId = schedulesId;
         this.doctorId = doctorId;
         this.startTime = startTime;
@@ -39,19 +40,19 @@ public class Schedules {
         this.doctorId = doctorId;
     }
 
-    public String getStartTime() {
+    public LocalDateTime getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(String startTime) {
+    public void setStartTime(LocalDateTime startTime) {
         this.startTime = startTime;
     }
 
-    public String getEndTime() {
+    public LocalDateTime getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(String endTime) {
+    public void setEndTime(LocalDateTime endTime) {
         this.endTime = endTime;
     }
 
@@ -66,8 +67,8 @@ public class Schedules {
     public Schedules(ResultSet rs) throws SQLException {
         schedulesId = rs.getInt("schedulesId");
         doctorId = rs.getInt("doctorId");
-        startTime = rs.getString("startTime");
-        endTime = rs.getString("endTime");
+        startTime = LocalDateTime.parse(rs.getString("startTime"));
+        endTime = LocalDateTime.parse(rs.getString("endTime"));
         isAvailable = Boolean.parseBoolean(String.valueOf(rs.getBoolean("isAvailable")));
 
         ResultSetMetaData mt = rs.getMetaData();

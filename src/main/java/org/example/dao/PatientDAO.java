@@ -1,6 +1,7 @@
 package org.example.dao;
 
 import org.example.dto.PatientsFilterDto;
+import org.example.models.Doctors;
 import org.example.models.Patients;
 
 import java.sql.*;
@@ -16,6 +17,8 @@ public class PatientDAO {
     private static final String SELECT_ALL_PATS = "select * from PATIENTS";
     private static final String UPDATE_PAT = "update PATIENTS set email = ?, password = ? where patientId = ?";
     private static final String DELETE_PAT = "delete from PATIENTS where patientId = ?";
+    private static final String LOGIN_PAT = "select * from PATIENTS where email = ? AND password = ?";
+
 
     public void insertPat(Patients p) throws SQLException, ClassNotFoundException {
         Class.forName("org.sqlite.JDBC");
@@ -26,7 +29,7 @@ public class PatientDAO {
         st.setString(2, p.getEmail());
         st.setString(3, p.getPassword());
         st.setString(4, p.getPhone());
-        st.setString(5, p.getDateOfBirth().toString());
+        st.setString(5, p.getDateOfBirth());
         st.executeUpdate();
     }
 
@@ -108,6 +111,21 @@ public class PatientDAO {
         }
 
         return pats;
+    }
+
+    public Patients PatientsLogin(String patEmail, String password) throws SQLException, ClassNotFoundException {
+        Class.forName("org.sqlite.JDBC");
+        Connection conn = DriverManager.getConnection(URL);
+        PreparedStatement st = conn.prepareStatement(LOGIN_PAT);
+        st.setString(1, patEmail);
+        st.setString(2, password);
+        ResultSet rs = st.executeQuery();
+        if(rs.next()) {
+            return new Patients(rs);
+        }
+        else {
+            return null;
+        }
     }
 
 

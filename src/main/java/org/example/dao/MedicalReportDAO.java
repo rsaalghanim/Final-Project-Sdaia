@@ -13,10 +13,10 @@ public class MedicalReportDAO {
     private static final String SELECT_ONE_MED = "select * from MEDICAL_REPORTS where medReportsId = ?";
     private static final String SELECT_MED_WITH_PATIENT = "select * from MEDICAL_REPORTS where patientId = ?";
     private static final String SELECT_MED_WITH_DETAIL = "select * from MEDICAL_REPORTS where details = ?";
-    private static final String SELECT_EMP_WITH_DEP = "select * from employees where department_id = ?";
-    private static final String SELECT_EMP_WITH_PAGINATION = "select * from employees order by employee_id limit ? offset ?";
+    //private static final String SELECT_EMP_WITH_DEP = "select * from employees where department_id = ?";
+   // private static final String SELECT_EMP_WITH_PAGINATION = "select * from employees order by employee_id limit ? offset ?";
     private static final String SELECT_ALL_MEDS = "select * from MEDICAL_REPORTS";
-    private static final String UPDATE_MED = "update MEDICAL_REPORTS set details = ? where medReportsId = ?";
+    private static final String UPDATE_MED = "update MEDICAL_REPORTS set details = ?, reportDate = ? where medReportsId = ?";
     private static final String DELETE_MED = "delete from MEDICAL_REPORTS where medReportsId = ?";
 
 
@@ -35,8 +35,9 @@ public class MedicalReportDAO {
         Class.forName("org.sqlite.JDBC");
         Connection conn = DriverManager.getConnection(URL);
         PreparedStatement st = conn.prepareStatement(UPDATE_MED);
-        st.setInt(2, m.getMedReportsId());
+        st.setInt(3, m.getMedReportsId());
         st.setString(1, m.getDetails());
+        st.setString(2, m.getReportDate().toString());
         st.executeUpdate();
     }
 

@@ -2,18 +2,19 @@ package org.example.models;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 
 public class MedicalReports {
 
     private int medReportsId;
     private int patientId;
     private String details;
-    private String reportDate;
+    private LocalDateTime reportDate;
 
     public MedicalReports() {
     }
 
-    public MedicalReports(int medReportsId, int patientId, String details, String reportDate) {
+    public MedicalReports(int medReportsId, int patientId, String details, LocalDateTime reportDate) {
         this.medReportsId = medReportsId;
         this.patientId = patientId;
         this.details = details;
@@ -44,11 +45,11 @@ public class MedicalReports {
         this.details = details;
     }
 
-    public String getReportDate() {
+    public LocalDateTime getReportDate() {
         return reportDate;
     }
 
-    public void setReportDate(String reportDate) {
+    public void setReportDate(LocalDateTime reportDate) {
         this.reportDate = reportDate;
     }
 
@@ -56,7 +57,7 @@ public class MedicalReports {
         medReportsId = rs.getInt("medReportsId");
         patientId = rs.getInt("patientId");
         details = rs.getString("details");
-        reportDate = rs.getString("reportDate");
+        reportDate = LocalDateTime.parse(rs.getString("reportDate"));
     }
 
     @Override
