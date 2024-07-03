@@ -2,9 +2,11 @@ package org.example.controller;
 
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.*;
+import org.example.dao.ConsultationDAO;
 import org.example.dao.DoctorDAO;
 import org.example.dto.DoctorDto;
 import org.example.dto.DoctorFilterDto;
+import org.example.dto.RateDto;
 import org.example.exceptions.DataNotFoundException;
 import org.example.mappers.DoctorMapper;
 import org.example.models.Doctors;
@@ -17,12 +19,15 @@ import java.util.ArrayList;
 public class DoctorController {
 
     DoctorDAO dao = new DoctorDAO();
+    DoctorDto dto = new DoctorDto();
+    ConsultationDAO consDao = new ConsultationDAO();
 
 
     @Context UriInfo uriInfo;
     @Context HttpHeaders headers;
 
         @GET
+        @Path("/search")
         @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON,"text/csv"})
         public Response getAllDoctors(
                 @BeanParam DoctorFilterDto filter
@@ -44,9 +49,6 @@ public class DoctorController {
                 }
 
                 return Response
-//                    .ok()
-//                    .entity(jobs)
-//                    .type(MediaType.APPLICATION_JSON)
                         .ok(docs, MediaType.APPLICATION_JSON)
                         .build();
             } catch (Exception e) {
@@ -74,11 +76,6 @@ public class DoctorController {
 //
                 }
 
-//                JobDto dto = new JobDto();
-//                dto.setJob_id(jobs.getJob_id());
-//                dto.setJob_title(jobs.getJob_title());
-//                dto.setMin_salary(jobs.getMin_salary());
-//                dto.setMax_salary(jobs.getMax_salary());
                 DoctorDto dto = DoctorMapper.INSTANCE.toJobDto(docs);
               addLinks(dto);
 
@@ -97,16 +94,36 @@ public class DoctorController {
             dto.addLink(empsUri.toString(),"Schedules");
         }
 
-        @DELETE
-        @Path("{doctorId}")
-        public void deleteDoctor(@PathParam("doctorId") int doctorId) {
+    @GET
+    @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, "text/csv"})
 
-            try {
-                dao.deleteDoc(doctorId);
-            } catch (Exception e) {
-                throw new RuntimeException(e);
+    public Response getDoctorByRate(@QueryParam("rateDoctor") int rateDoctor) {
+    ArrayList<Doctors> doctors = new ArrayList<>();
+        try {
+            ArrayList<RateDto> rateDtos = consDao.searchByRate(rateDoctor);
+            for (RateDto rateDto : rateDtos) {
+                doctors.add(dao.selectDoc(rateDto.getDoctorId()));
             }
+
+            return Response.ok(doctors).build();
+            // return jobs;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
+    }
+
+
+//
+//        @DELETE
+//        @Path("{doctorId}")
+//        public void deleteDoctor(@PathParam("doctorId") int doctorId) {
+//
+//            try {
+//                dao.deleteDoc(doctorId);
+//            } catch (Exception e) {
+//                throw new RuntimeException(e);
+//            }
+//        }
 
         @POST
        @Consumes({MediaType.APPLICATION_XML,MediaType.APPLICATION_JSON})

@@ -34,9 +34,6 @@ public class MedicalReportsController {
                             .type(MediaType.APPLICATION_XML)
                             .build();
 
-              //  return dao.selectAllJobs(minsal, limit, offset);
-                //return dao.selectAllEmps(filter);
-                //return dao.selectAllEmps();
                   }
                 else if(headers.getAcceptableMediaTypes().contains(MediaType.valueOf("text/csv"))) {
                     return Response
@@ -107,25 +104,25 @@ public class MedicalReportsController {
         dto.addLink(empsUri.toString(),"MedicalReports");
     }
 
-        @DELETE
-        @Path("{medReportsId}")
-        public Response deleteMedicalReports(
-                @PathParam("medReportsId") int medReportsId) {
-
-            try {
-                dao.deleteMed(medReportsId);
-                if(headers.getAcceptableMediaTypes().contains(MediaType.valueOf(MediaType.APPLICATION_XML))) {
-                    return Response
-                            .ok()
-                            .type(MediaType.APPLICATION_XML)
-                            .build();
+//        @DELETE
+//        @Path("{medReportsId}")
+//        public Response deleteMedicalReports(
+//                @PathParam("medReportsId") int medReportsId) {
 //
-                }
-                return Response.ok().build();
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-        }
+//            try {
+//                dao.deleteMed(medReportsId);
+//                if(headers.getAcceptableMediaTypes().contains(MediaType.valueOf(MediaType.APPLICATION_XML))) {
+//                    return Response
+//                            .ok()
+//                            .type(MediaType.APPLICATION_XML)
+//                            .build();
+////
+//                }
+//                return Response.ok().build();
+//            } catch (Exception e) {
+//                throw new RuntimeException(e);
+//            }
+//        }
 
         @POST
         @Consumes({MediaType.APPLICATION_XML,MediaType.APPLICATION_JSON})

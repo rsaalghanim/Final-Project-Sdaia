@@ -34,9 +34,6 @@ public class PatientController {
                             .type(MediaType.APPLICATION_XML)
                             .build();
 
-              //  return dao.selectAllJobs(minsal, limit, offset);
-                //return dao.selectAllEmps(filter);
-                //return dao.selectAllEmps();
                   }
                 else if(headers.getAcceptableMediaTypes().contains(MediaType.valueOf("text/csv"))) {
                     return Response
@@ -73,19 +70,7 @@ public class PatientController {
                             .ok(pats)
                             .type(MediaType.APPLICATION_XML)
                             .build();
-                } // return dao.selectEmp(employee_id);
-
-//                EmployeeDto dto = new EmployeeDto();
-//                dto.setEmployee_id(emps.getEmployee_id());
-//                dto.setFirst_name(emps.getFirst_name());
-//                dto.setLast_name(emps.getLast_name());
-//                dto.setEmail(emps.getEmail());
-//                dto.setNumber(emps.getNumber());
-//                dto.setHire_date(emps.getHire_date());
-//                dto.setJob_id(emps.getJob_id());
-//                dto.setSalary(emps.getSalary());
-//                dto.setManager_id(emps.getManager_id());
-//                dto.setDepartment_id(emps.getDepartment_id());
+                }
                 PatientsDto dto = PatientMapper.INSTANCE.toPatientDto(pats);
 
                 addLinks(dto);
@@ -107,25 +92,6 @@ public class PatientController {
         dto.addLink(empsUri.toString(),"Patients");
     }
 
-        @DELETE
-        @Path("{patientId}")
-        public Response deletePatient(
-                @PathParam("patientId") int patientId) {
-
-            try {
-                dao.deletePat(patientId);
-                if(headers.getAcceptableMediaTypes().contains(MediaType.valueOf(MediaType.APPLICATION_XML))) {
-                    return Response
-                            .ok()
-                            .type(MediaType.APPLICATION_XML)
-                            .build();
-//
-                }
-                return Response.ok().build();
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-        }
 
         @POST
         @Consumes({MediaType.APPLICATION_XML,MediaType.APPLICATION_JSON})

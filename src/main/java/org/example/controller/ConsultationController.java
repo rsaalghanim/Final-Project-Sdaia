@@ -73,15 +73,11 @@ public class ConsultationController {
 //
                 }
 
-
-
-
-
                 ConsultationsDto dto = ConsultationMapper.INSTANCE.toConsultDto(cons);
               addLinks(dto);
 
                 return Response.ok(dto).build();
-              // return jobs;
+
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
@@ -95,17 +91,6 @@ public class ConsultationController {
             dto.addLink(empsUri.toString(),"DOCTORS");
         }
 
-        @DELETE
-        @Path("{consultId}")
-        public void deleteConsultation(@PathParam("consultId") int consultId) {
-
-            try {
-                dao.deleteConsult(consultId);
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-        }
-
         @POST
        @Consumes({MediaType.APPLICATION_XML,MediaType.APPLICATION_JSON})
         public Response insertConsultation(ConsultationsDto dto) {
@@ -113,12 +98,11 @@ public class ConsultationController {
             try {
                 Consultations cons = ConsultationMapper.INSTANCE.toModel(dto);
                 dao.insertConsult(cons);
-                NewCookie cookie = (new NewCookie.Builder("username")).value("00000").build();
                 URI uri = uriInfo.getAbsolutePathBuilder().path(cons.getConsultId()+"").build();
                 return Response
                         .created(uri)
-                        .cookie(cookie)
-                        .header("Created by", "Ragad")
+//                        .cookie(cookie)
+//                        .header("Created by", "Ragad")
                         .build();
             } catch (Exception e) {
                 throw new RuntimeException(e);

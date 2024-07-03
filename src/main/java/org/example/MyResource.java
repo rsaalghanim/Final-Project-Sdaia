@@ -6,7 +6,6 @@ import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.HttpHeaders;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.UriInfo;
-import org.example.dto.EmpIdDto;
 
 /**
  * Root resource (exposed at "myresource" path)
@@ -56,10 +55,10 @@ public class MyResource {
 //        return "The date is: " + day;
 //    }
 
-    @GET
-    @Path("/employees/{empId}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public EmpIdDto getDate(@PathParam("empId") EmpIdDto empId) {
-        return empId;
-    }
+//    @GET
+//    @Path("/employees/{empId}")
+//    @Produces(MediaType.APPLICATION_JSON)
+//    public EmpIdDto getDate(@PathParam("empId") EmpIdDto empId) {
+//        return empId;
+//    }
 }

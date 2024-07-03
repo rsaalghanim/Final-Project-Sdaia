@@ -5,14 +5,11 @@ import jakarta.ws.rs.container.ContainerRequestContext;
 import jakarta.ws.rs.container.ContainerRequestFilter;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.ext.Provider;
-//import org.example.dao.DepartmentDAO;
 import org.example.dao.DoctorDAO;
-import org.example.dao.EmployeeDAO;
 import org.example.dao.PatientDAO;
 import org.example.dto.ErrorMessage;
 
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.*;
 
 @Provider

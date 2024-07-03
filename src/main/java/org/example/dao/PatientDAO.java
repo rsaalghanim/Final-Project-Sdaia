@@ -1,5 +1,6 @@
 package org.example.dao;
 
+import org.example.db.MCPConnection;
 import org.example.dto.PatientsFilterDto;
 import org.example.models.Doctors;
 import org.example.models.Patients;
@@ -22,34 +23,28 @@ public class PatientDAO {
 
     public void insertPat(Patients p) throws SQLException, ClassNotFoundException {
         Class.forName("org.sqlite.JDBC");
-        Connection conn = DriverManager.getConnection(URL);
-        PreparedStatement st = conn.prepareStatement(INSERT_PAT);
-       // st.setInt(1, p.getPatientId());
-        st.setString(1, p.getName());
-        st.setString(2, p.getEmail());
-        st.setString(3, p.getPassword());
-        st.setString(4, p.getPhone());
-        st.setString(5, p.getDateOfBirth());
-        st.executeUpdate();
+        try (Connection conn = MCPConnection.getConn();
+             PreparedStatement st = conn.prepareStatement(INSERT_PAT)) {
+            // st.setInt(1, p.getPatientId());
+            st.setString(1, p.getName());
+            st.setString(2, p.getEmail());
+            st.setString(3, p.getPassword());
+            st.setString(4, p.getPhone());
+            st.setString(5, p.getDateOfBirth());
+            st.executeUpdate();
+        }
     }
-
     public void updatePat(Patients p) throws SQLException, ClassNotFoundException {
         Class.forName("org.sqlite.JDBC");
-        Connection conn = DriverManager.getConnection(URL);
-        PreparedStatement st = conn.prepareStatement(UPDATE_PAT);
-        st.setInt(3, p.getPatientId());
-        st.setString(1, p.getEmail());
-        st.setString(2, p.getPassword());
-        st.executeUpdate();
+        try (Connection conn = MCPConnection.getConn();
+             PreparedStatement st = conn.prepareStatement(UPDATE_PAT)) {
+            st.setInt(3, p.getPatientId());
+            st.setString(1, p.getEmail());
+            st.setString(2, p.getPassword());
+            st.executeUpdate();
+        }
     }
 
-    public void deletePat(int patientId) throws SQLException, ClassNotFoundException {
-        Class.forName("org.sqlite.JDBC");
-        Connection conn = DriverManager.getConnection(URL);
-        PreparedStatement st = conn.prepareStatement(DELETE_PAT);
-        st.setInt(1, patientId);
-        st.executeUpdate();
-    }//
 
     public Patients selectPat(int patientId) throws SQLException, ClassNotFoundException {
         Class.forName("org.sqlite.JDBC");
@@ -65,29 +60,7 @@ public class PatientDAO {
         }
     }
 
-    public ArrayList<Patients> selectAllPats(String patName, String patPhone) throws SQLException, ClassNotFoundException {
-        Class.forName("org.sqlite.JDBC");
-        Connection conn = DriverManager.getConnection(URL);
-        PreparedStatement st;
-        if(patName != null) {
-            st = conn.prepareStatement(SELECT_PAT_WITH_NAME);
-            st.setString(1, patName);
-        }
-        else if(patPhone != null) {
-            st = conn.prepareStatement(SELECT_PAT_WITH_PHONE);
-            st.setString(1, patPhone);
-        }
-        else {
-            st = conn.prepareStatement(SELECT_ALL_PATS);
-        }
-        ResultSet rs = st.executeQuery();
-        ArrayList<Patients> pats = new ArrayList<>();
-        while (rs.next()) {
-            pats.add(new Patients(rs));
-        }
 
-        return pats;
-    }
 
     public ArrayList<Patients> selectAllPats(PatientsFilterDto filter) throws SQLException, ClassNotFoundException {
         Class.forName("org.sqlite.JDBC");
@@ -115,19 +88,18 @@ public class PatientDAO {
 
     public Patients PatientsLogin(String patEmail, String password) throws SQLException, ClassNotFoundException {
         Class.forName("org.sqlite.JDBC");
-        Connection conn = DriverManager.getConnection(URL);
-        PreparedStatement st = conn.prepareStatement(LOGIN_PAT);
-        st.setString(1, patEmail);
-        st.setString(2, password);
-        ResultSet rs = st.executeQuery();
-        if(rs.next()) {
-            return new Patients(rs);
+        try (Connection conn = MCPConnection.getConn();
+             PreparedStatement st = conn.prepareStatement(LOGIN_PAT)) {
+            st.setString(1, patEmail);
+            st.setString(2, password);
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                return new Patients(rs);
+            } else {
+                return null;
+            }
         }
-        else {
-            return null;
-        }
+
     }
-
-
 
 }
