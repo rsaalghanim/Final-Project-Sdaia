@@ -106,41 +106,37 @@ public class ConsultationDAO {
 
     public ArrayList<Consultations> selectAllConsults(ConsultFilterDto filter) throws SQLException, ClassNotFoundException {
         Class.forName("org.sqlite.JDBC");
-        Connection conn = DriverManager.getConnection(URL);
-        PreparedStatement st;
-        if(filter.getDocId() != null && filter.getStat() != null) {
-            st = conn.prepareStatement(SELECT_CONSULT_WITH_PENDING_REQ);
-            st.setInt(1, filter.getDocId());
-            st.setString(2, filter.getStat());
-        }
-        else if(filter.getDiagnose() != null) {
-            st = conn.prepareStatement(SELECT_CONSULT_WITH_DIAGNOSE);
-            st.setString(1, filter.getDiagnose());
-        }
-        else if(filter.getPendingReq() != null) {
-            st = conn.prepareStatement(SELECT_CONSULT_WITH_PENDING_REQ);
-            st.setString(1, filter.getPendingReq().toString());
-        }
-        else if(filter.getRate() != null) {
-            st = conn.prepareStatement(SELECT_RATE);
-            st.setInt(1, filter.getRate());
-        }
-        else if(filter.getStat() != null) {
-            st = conn.prepareStatement(SELECT_CONSULT_WITH_STAT);
-            st.setString(1, filter.getStat());
-        }else {
-            st = conn.prepareStatement(SELECT_ALL_CONSULT);
-        }
-        ResultSet rs = st.executeQuery();
-        ArrayList<Consultations> cons = new ArrayList<>();
-        while (rs.next()) {
-            cons.add(new Consultations(rs));
+        try (Connection conn = MCPConnection.getConn()) {
+            PreparedStatement st;
+            if (filter.getDocId() != null && filter.getStat() != null) {
+                st = conn.prepareStatement(SELECT_CONSULT_WITH_PENDING_REQ);
+                st.setInt(1, filter.getDocId());
+                st.setString(2, filter.getStat());
+            } else if (filter.getDiagnose() != null) {
+                st = conn.prepareStatement(SELECT_CONSULT_WITH_DIAGNOSE);
+                st.setString(1, filter.getDiagnose());
+            } else if (filter.getPendingReq() != null) {
+                st = conn.prepareStatement(SELECT_CONSULT_WITH_PENDING_REQ);
+                st.setString(1, filter.getPendingReq().toString());
+            } else if (filter.getRate() != null) {
+                st = conn.prepareStatement(SELECT_RATE);
+                st.setInt(1, filter.getRate());
+            } else if (filter.getStat() != null) {
+                st = conn.prepareStatement(SELECT_CONSULT_WITH_STAT);
+                st.setString(1, filter.getStat());
+            } else {
+                st = conn.prepareStatement(SELECT_ALL_CONSULT);
+            }
+            ResultSet rs = st.executeQuery();
+            ArrayList<Consultations> cons = new ArrayList<>();
+            while (rs.next()) {
+                cons.add(new Consultations(rs));
+            }
+
+            return cons;
         }
 
-        return cons;
     }
-
-
 
 
 

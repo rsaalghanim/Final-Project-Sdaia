@@ -20,7 +20,7 @@ public class DoctorDAO {
     private static final String SELECT_DOC_WITH_NAME = "select * from DOCTORS where name = ?";
     private static final String INSERT_DOC = "insert into DOCTORS (name, specialty, email, password, phone) values (?, ?, ?, ?, ?)";
     private static final String UPDATE_DOC = "update DOCTORS set email = ?, specialty = ? where doctorId = ?";
-    private static final String DELETE_DOC = "delete from DOCTORS where doctorId = ?";
+   // private static final String DELETE_DOC = "delete from DOCTORS where doctorId = ?";
    private static final String LOGIN_DOC = "select * from DOCTORS where email = ? AND password = ?";
 
 
