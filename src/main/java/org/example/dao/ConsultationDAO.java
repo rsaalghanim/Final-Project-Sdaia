@@ -2,6 +2,8 @@ package org.example.dao;
 
 import org.example.db.MCPConnection;
 import org.example.dto.ConsultFilterDto;
+import org.example.dto.ConsultationsDto;
+import org.example.dto.DoctorDto;
 import org.example.dto.RateDto;
 import org.example.models.Consultations;
 
@@ -12,18 +14,37 @@ import java.util.ArrayList;
 public class ConsultationDAO {
 
     private static final   String URL = "jdbc:sqlite:C:\\Users\\dev\\IdeaProjects\\FinalProject\\hospital.db";
+    //Doctor GIVE consultation to a PENDING request:
+    //Doctor RECORD a patient’s diagnosis:
+    //Patient REQUEST consultation from a selected doctor:
+    //Patient RATE a doctor Or from UPDATE:
+
+    //***still****
     private static final String INSERT_CONSULT = "insert into CONSULTATIONS (doctorId, patientId, requestTime, consultationTime, status, diagnosis, rateDoctor) values (?, ?, ?, ?, ?, ?, ?)";
+
+    //Doctor CHECK all PENDING consultation REQUESTS(***still***):
+    private static final String SELECT_CONSULT_WITH_PENDING_REQ = "select * from CONSULTATIONS where doctorId = ? AND status = ?";
+
+    //Patient CHECK a consultation RESULT:
+    private static final String SELECT_ALL_CONSULT = "select * from CONSULTATIONS";
+
+    //Patient RATE a doctor Or from INSERT:
+    private static final String UPDATE_CONSULT = "update CONSULTATIONS set requestTime = ?, consultationTime = ?, status = ?, diagnosis = ?, rateDoctor = ? where consultId = ?";
+
+
+    //----------not needed---------
     private static final String SELECT_ONE_CONSULT = "select * from CONSULTATIONS where consultId = ?";
     private static final String SELECT_CONSULT_WITH_DIAGNOSE = "select * from CONSULTATIONS where diagnosis = ?";
-    private static final String SELECT_CONSULT_WITH_PENDING_REQ = "select * from CONSULTATIONS where doctorId = ? AND status = ?";
+
    // private static final String SELECT_CONSULT_WITH_RATE = "select * from CONSULTATIONS where rateDoctor = ?";
+
     private static final String SELECT_CONSULT_WITH_STAT = "select * from CONSULTATIONS where status = ?";
-    private static final String SELECT_ALL_CONSULT = "select * from CONSULTATIONS";
-    private static final String UPDATE_CONSULT = "update CONSULTATIONS set requestTime = ?, consultationTime = ?, status = ?, diagnosis = ?, rateDoctor = ? where consultId = ?";
+
     //private static final String DELETE_CONSULT = "delete from CONSULTATIONS where consultId = ?";
     //private static final String SELECT_RATE = "select * from CONSULTATIONS where rateDoctor = ?";
-    private static final String SELECT_RATE = "select DISTINCT doctorId from CONSULTATIONS where rateDoctor = ?";
 
+    private static final String SELECT_RATE = "select DISTINCT doctorId from CONSULTATIONS where rateDoctor = ?";
+    //----------not needed---------
 
 
     public void insertConsult(Consultations c) throws SQLException, ClassNotFoundException {
@@ -104,7 +125,7 @@ public class ConsultationDAO {
 
 
 
-    public ArrayList<Consultations> selectAllConsults(ConsultFilterDto filter) throws SQLException, ClassNotFoundException {
+    public ArrayList<ConsultationsDto> selectAllConsults(ConsultFilterDto filter) throws SQLException, ClassNotFoundException {
         Class.forName("org.sqlite.JDBC");
         try (Connection conn = MCPConnection.getConn()) {
             PreparedStatement st;
@@ -128,9 +149,9 @@ public class ConsultationDAO {
                 st = conn.prepareStatement(SELECT_ALL_CONSULT);
             }
             ResultSet rs = st.executeQuery();
-            ArrayList<Consultations> cons = new ArrayList<>();
+            ArrayList<ConsultationsDto> cons = new ArrayList<>();
             while (rs.next()) {
-                cons.add(new Consultations(rs));
+                cons.add(new ConsultationsDto(rs));
             }
 
             return cons;

@@ -1,6 +1,7 @@
 package org.example.mappers;
 
 import org.example.dto.DoctorDto;
+import org.example.dto.DoctorDtoAll;
 import org.example.models.Doctors;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
@@ -12,8 +13,11 @@ public interface DoctorMapper {
 
 
 
-    DoctorDto toJobDto(Doctors d);
+    DoctorDto toDocDto(Doctors d);
 
 
-    Doctors toModel(DoctorDto dto);
+
+   // Doctors toModel(DoctorDto dto);
+
+    Doctors toModel(DoctorDtoAll dtoAll);
 }

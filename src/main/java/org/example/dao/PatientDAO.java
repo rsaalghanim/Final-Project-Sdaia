@@ -11,14 +11,22 @@ import java.util.ArrayList;
 public class PatientDAO {
 
     private static final   String URL = "jdbc:sqlite:C:\\Users\\dev\\IdeaProjects\\FinalProject\\hospital.db";
+
+    //Patient REGISTER
     private static final String INSERT_PAT = "insert into PATIENTS (name, email, password, phone, dateOfBirth) values (?, ?, ?, ?, ?)";
+
+    //Patient and LOGIN
+    private static final String LOGIN_PAT = "select * from PATIENTS where email = ? AND password = ?";
+
+
+    //----------not needed---------
     private static final String SELECT_ONE_PAT = "select * from PATIENTS where patientId = ?";
     private static final String SELECT_PAT_WITH_NAME = "select * from PATIENTS where name = ?";
     private static final String SELECT_PAT_WITH_PHONE = "select * from PATIENTS where phone = ?";
     private static final String SELECT_ALL_PATS = "select * from PATIENTS";
     private static final String UPDATE_PAT = "update PATIENTS set email = ?, password = ? where patientId = ?";
     private static final String DELETE_PAT = "delete from PATIENTS where patientId = ?";
-    private static final String LOGIN_PAT = "select * from PATIENTS where email = ? AND password = ?";
+    //----------not needed---------
 
 
     public void insertPat(Patients p) throws SQLException, ClassNotFoundException {

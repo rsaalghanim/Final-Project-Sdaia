@@ -2,6 +2,7 @@ package org.example.dao;
 
 import org.example.db.MCPConnection;
 import org.example.dto.ScheduleFilterDto;
+import org.example.dto.SchedulesDto;
 import org.example.models.Schedules;
 
 import java.sql.*;
@@ -10,15 +11,25 @@ import java.util.ArrayList;
 public class ScheduleDAO {
 
     private static final   String URL = "jdbc:sqlite:C:\\Users\\dev\\IdeaProjects\\FinalProject\\hospital.db";
+
+    //Doctor MANAGE availability schedule:
+    private static final String UPDATE_SCHED = "update SCHEDULES set startTime = ?, endTime = ?, isAvailable = ? where schedulesId = ?";
+
     private static final String INSERT_SCHED = "insert into SCHEDULES (doctorId, startTime, endTime, isAvailable) values (?, ?, ?, ?)";
-    private static final String SELECT_ONE_SCHED = "select * from employees where employee_id = ?";
+
+    //----------not needed---------
+    private static final String SELECT_ONE_SCHED = "select * from SCHEDULES where schedulesId = ?";
     private static final String SELECT_SCHED_WITH_DOC = "select * from SCHEDULES where doctorId = ?";
     private static final String SELECT_SCHED_WITH_AVAILABLE = "select * from SCHEDULES where isAvailable = ?";
     private static final String SELECT_SCHED_WITH_DOC_AVAILABLE = "select * from SCHEDULES where doctorId = ? AND isAvailable = ?";
     private static final String SELECT_ALL_SCHEDS = "select * from SCHEDULES";
-    private static final String UPDATE_SCHED = "update SCHEDULES set startTime = ?, endTime = ?, isAvailable = ? where schedulesId = ?";
-   // private static final String UPDATE_SCHED = "update SCHEDULES set startTime = ?, endTime = ? where doctorId = ?";
-    private static final String DELETE_SCHED = "delete from SCHEDULES where schedulesId = ?";
+    // private static final String UPDATE_SCHED = "update SCHEDULES set startTime = ?, endTime = ? where doctorId = ?";
+    //  private static final String DELETE_SCHED = "delete from SCHEDULES where schedulesId = ?";
+    //----------not needed---------
+
+
+
+
 
 
     public void insertSched(Schedules s) throws SQLException, ClassNotFoundException {
@@ -34,7 +45,7 @@ public class ScheduleDAO {
         }
     }
 
-    public void updateSched(Schedules s) throws SQLException, ClassNotFoundException {
+    public void updateSched(SchedulesDto s) throws SQLException, ClassNotFoundException {
         Class.forName("org.sqlite.JDBC");
         try (Connection conn = MCPConnection.getConn();
              PreparedStatement st = conn.prepareStatement(UPDATE_SCHED)) {

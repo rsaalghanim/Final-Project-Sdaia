@@ -5,6 +5,7 @@ import jakarta.ws.rs.core.*;
 import org.example.dao.ConsultationDAO;
 import org.example.dto.ConsultFilterDto;
 import org.example.dto.ConsultationsDto;
+import org.example.dto.ConsultationsDtoAll;
 import org.example.exceptions.DataNotFoundException;
 import org.example.mappers.ConsultationMapper;
 import org.example.models.Consultations;
@@ -31,7 +32,7 @@ public class ConsultationController {
                 ) {
 
             try {
-                GenericEntity<ArrayList<Consultations>> cons = new GenericEntity<ArrayList<Consultations>>(dao.selectAllConsults(filter)) {};
+                GenericEntity<ArrayList<ConsultationsDto>> cons = new GenericEntity<ArrayList<ConsultationsDto>>(dao.selectAllConsults(filter)) {};
                 if(headers.getAcceptableMediaTypes().contains(MediaType.valueOf(MediaType.APPLICATION_XML))) {
                     return Response
                             .ok(cons)
@@ -93,10 +94,11 @@ public class ConsultationController {
 
         @POST
        @Consumes({MediaType.APPLICATION_XML,MediaType.APPLICATION_JSON})
-        public Response insertConsultation(ConsultationsDto dto) {
+        public Response insertConsultation(ConsultationsDtoAll dtoAll) {
 
             try {
-                Consultations cons = ConsultationMapper.INSTANCE.toModel(dto);
+                //Consultations cons = ConsultationMapper.INSTANCE.toModel(dto);
+                Consultations cons = ConsultationMapper.INSTANCE.toModelAll(dtoAll);
                 dao.insertConsult(cons);
                 URI uri = uriInfo.getAbsolutePathBuilder().path(cons.getConsultId()+"").build();
                 return Response

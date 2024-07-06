@@ -10,23 +10,17 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 @XmlRootElement
-public class DoctorDto {
+public class DoctorDtoAll {
 
   private int doctorId ;
   private String name;
   private String specialty;
-//  private String email ;
-//  private String password;
-//  private String phone;
+  private String email ;
+  private String password;
+  private String phone;
 
     private ArrayList<LinkDto> links = new ArrayList<>();
-    public DoctorDto() {
-    }
-
-    public DoctorDto(int doctorId, String name, String specialty) {
-        this.doctorId = doctorId;
-        this.name = name;
-        this.specialty = specialty;
+    public DoctorDtoAll() {
     }
 
     public int getDoctorId() {
@@ -53,29 +47,29 @@ public class DoctorDto {
         this.specialty = specialty;
     }
 
-//    public String getEmail() {
-//        return email;
-//    }
-//
-//    public void setEmail(String email) {
-//        this.email = email;
-//    }
-//
-//    public String getPassword() {
-//        return password;
-//    }
-//
-//    public void setPassword(String password) {
-//        this.password = password;
-//    }
-//
-//    public String getPhone() {
-//        return phone;
-//    }
-//
-//    public void setPhone(String phone) {
-//        this.phone = phone;
-//    }
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
 
     @XmlElementWrapper
     @XmlElement(name = "link")
@@ -85,13 +79,13 @@ public class DoctorDto {
         link.setRel(rel);
         links.add(link);
     }
-    public DoctorDto(ResultSet rs) throws SQLException {
+    public DoctorDtoAll(ResultSet rs) throws SQLException {
         doctorId = rs.getInt("doctorId");
         name = rs.getString("name");
         specialty = rs.getString("specialty");
-//        email = rs.getString("email");
-//        password = rs.getString("password");
-//        phone = rs.getString("phone");
+        email = rs.getString("email");
+        password = rs.getString("password");
+        phone = rs.getString("phone");
     }
 
     @Override
@@ -100,9 +94,9 @@ public class DoctorDto {
                 "doctorId=" + doctorId +
                 ", name='" + name + '\'' +
                 ", specialty='" + specialty + '\'' +
-//                ", email='" + email + '\'' +
-//                ", password='" + password + '\'' +
-//                ", phone='" + phone + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", phone='" + phone + '\'' +
                 '}';
     }
 }

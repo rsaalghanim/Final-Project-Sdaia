@@ -1,6 +1,7 @@
 package org.example.mappers;
 
 import org.example.dto.ConsultationsDto;
+import org.example.dto.ConsultationsDtoAll;
 import org.example.models.Consultations;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
@@ -13,6 +14,6 @@ public interface ConsultationMapper {
 
     ConsultationsDto toConsultDto(Consultations c);
 
-
+    Consultations toModelAll(ConsultationsDtoAll dtoAll);
     Consultations toModel(ConsultationsDto dto);
 }

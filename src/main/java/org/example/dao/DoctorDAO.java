@@ -2,6 +2,8 @@ package org.example.dao;
 
 
 import org.example.db.MCPConnection;
+import org.example.dto.DoctorDto;
+import org.example.dto.DoctorDtoAll;
 import org.example.dto.DoctorFilterDto;
 import org.example.models.Doctors;
 
@@ -12,19 +14,42 @@ import java.util.ArrayList;
 public class DoctorDAO {
 
     private static final String URL = "jdbc:sqlite:C:\\Users\\dev\\IdeaProjects\\FinalProject\\hospital.db";
+
+    //SEARCH for doctor ALL:
     private static final String SELECT_ALL_DOCS = "select * from DOCTORS";
     //private static final String SELECT_DOCS = "select doctorId, name from DOCTORS";
+
+    //SEARCH for doctor by ID 1:
     private static final String SELECT_ONE_DOC = "select * from DOCTORS where doctorId = ?";
-    private static final String SELECT_DOC_WITH_SPECIALITY = "select * from DOCTORS where specialty = ?";
+
+    //SEARCH for doctor by ID 2:
     private static final String SELECT_DOC_WITH_ID= "select * from DOCTORS where doctorId = ?";
+
+    //SEARCH for doctor by SPECIALITY:
+    private static final String SELECT_DOC_WITH_SPECIALITY = "select * from DOCTORS where specialty = ?";
+
+    //SEARCH for doctor by NAME:
     private static final String SELECT_DOC_WITH_NAME = "select * from DOCTORS where name = ?";
-    private static final String INSERT_DOC = "insert into DOCTORS (name, specialty, email, password, phone) values (?, ?, ?, ?, ?)";
+
+    //SEARCH for doctor by RATE:
+    private static final String RATE_BY_DOCTOR = "SELECT doctorId, name, specialty FROM DOCTORS WHERE doctorId in (select distinct (doctorId) from  CONSULTATIONS where CONSULTATIONS.rateDoctor = ?)";
+
+    //SEARCH for doctor by AVAILABILITY:
+    private static final String SCHEDULE_AVAILABILITY_BY_DOCTOR = "SELECT doctorId, name, specialty FROM DOCTORS WHERE doctorId in (select distinct (doctorId) from SCHEDULES where SCHEDULES.isAvailable = ?)";
+
+    //UPDATE:
     private static final String UPDATE_DOC = "update DOCTORS set email = ?, specialty = ? where doctorId = ?";
-   // private static final String DELETE_DOC = "delete from DOCTORS where doctorId = ?";
+    // private static final String DELETE_DOC = "delete from DOCTORS where doctorId = ?";
+
+    //Doctor REGISTER:
+    private static final String INSERT_DOC = "insert into DOCTORS (name, specialty, email, password, phone) values (?, ?, ?, ?, ?)";
+
+    //Doctor LOGIN:
    private static final String LOGIN_DOC = "select * from DOCTORS where email = ? AND password = ?";
 
 
-    public void insertDoc(Doctors d) throws SQLException, ClassNotFoundException {
+
+    public void insertDoc(DoctorDtoAll d) throws SQLException, ClassNotFoundException {
         Class.forName("org.sqlite.JDBC");
         try (Connection conn = MCPConnection.getConn();
              PreparedStatement st = conn.prepareStatement(INSERT_DOC)) {
@@ -40,7 +65,7 @@ public class DoctorDAO {
     }
 
 
-    public void updateDoc(Doctors d) throws SQLException, ClassNotFoundException {
+    public void updateDoc(DoctorDtoAll d) throws SQLException, ClassNotFoundException {
         Class.forName("org.sqlite.JDBC");
         try (Connection conn = MCPConnection.getConn();
              PreparedStatement st = conn.prepareStatement(UPDATE_DOC)) {
@@ -59,14 +84,14 @@ public class DoctorDAO {
 //        st.executeUpdate();
 //    }
 
-    public Doctors selectDoc(int doctorId) throws SQLException, ClassNotFoundException {
+    public DoctorDto selectDoc(int doctorId) throws SQLException, ClassNotFoundException {
         Class.forName("org.sqlite.JDBC");
         try (Connection conn = MCPConnection.getConn();
              PreparedStatement st = conn.prepareStatement(SELECT_ONE_DOC)) {
             st.setInt(1, doctorId);
             ResultSet rs = st.executeQuery();
             if (rs.next()) {
-                return new Doctors(rs);
+                return new DoctorDto(rs);
             } else {
                 return null;//
             }
@@ -74,37 +99,54 @@ public class DoctorDAO {
         }
     }
 
-//    public ArrayList<Doctors> selectAllDocs(String docSpecialty, Integer docId, String docName) throws SQLException, ClassNotFoundException {
-//        Class.forName("org.sqlite.JDBC");
-//        Connection conn = DriverManager.getConnection(URL);
-//        PreparedStatement st ;
-//        if(docSpecialty != null) {
-//            st = conn.prepareStatement(SELECT_DOC_WITH_SPECIALITY);
-//            st.setString(1,docSpecialty);
-//        }
-//        else if(docId != null) {
-//            st = conn.prepareStatement(SELECT_DOC_WITH_ID);
-//            st.setInt(1, docId);
-//        }
-//        else if(docName != null) {
-//            st = conn.prepareStatement(SELECT_DOC_WITH_NAME);
-//            st.setString(1, docName);
+    public ArrayList<DoctorDto> getRateDoctors(int consultation_rating) throws SQLException, ClassNotFoundException {
+        ArrayList<DoctorDto> doctors = new ArrayList<>();
+
+        Connection conn = MCPConnection.getConn();
+        PreparedStatement st = conn.prepareStatement(RATE_BY_DOCTOR);
+
+        st.setInt(1, consultation_rating);
+
+        try (ResultSet resultSet = st.executeQuery()) {
+            while (resultSet.next()) {
+                DoctorDto doctor = new DoctorDto(
+                        resultSet.getInt("doctorId"),
+                        resultSet.getString("name"),
+                        resultSet.getString("specialty")
+
+                );
+                doctors.add(doctor);
+            }
+        }
+
+        return doctors;
+
+    }
+
+//    public ArrayList<DoctorDto> getAvailableDoctors(boolean schedule_is_available) throws SQLException, ClassNotFoundException {
+//        ArrayList<DoctorDto> doctorDtos = new ArrayList<>();
 //
-//        }
-//        else {
-//            st = conn.prepareStatement(SELECT_ALL_DOCS);
-//        }
-//        ResultSet rs = st.executeQuery();
-//        ArrayList<Doctors> jobs = new ArrayList<>();
-//        while (rs.next()) {
-//            jobs.add(new Doctors(rs));
+//        Connection conn = MCPConnection.getConn();
+//        PreparedStatement st = conn.prepareStatement(SCHEDULE_AVAILABILITY_BY_DOCTOR);
+//
+//        st.setBoolean(1, schedule_is_available);
+//
+//        try (ResultSet resultSet = st.executeQuery()) {
+//            while (resultSet.next()) {
+//                DoctorDto doctorDto = new DoctorDto(
+//                        resultSet.getInt("doctor_id"),
+//                        resultSet.getString("doctor_name"),
+//                        resultSet.getString("doctor_specialty")
+//                );
+//                doctorDtos.add(doctorDto);
+//            }
 //        }
 //
-//        return jobs;
+//        return doctorDtos;
 //    }
 
 
-    public ArrayList<Doctors> selectAllDocs(DoctorFilterDto filter) throws SQLException, ClassNotFoundException {
+    public ArrayList<DoctorDto> selectAllDocs(DoctorFilterDto filter) throws SQLException, ClassNotFoundException {
         Class.forName("org.sqlite.JDBC");
         try (Connection conn = MCPConnection.getConn())
         {PreparedStatement st ;
@@ -121,13 +163,19 @@ public class DoctorDAO {
             st.setString(1, filter.getDocName());
 
         }
+
+        else if(filter.getDocAval() != null) {
+            st = conn.prepareStatement(SCHEDULE_AVAILABILITY_BY_DOCTOR);
+            st.setBoolean(1, filter.getDocAval());
+
+        }
         else {
             st = conn.prepareStatement(SELECT_ALL_DOCS);
         }
         ResultSet rs = st.executeQuery();
-        ArrayList<Doctors> docs = new ArrayList<>();
+        ArrayList<DoctorDto> docs = new ArrayList<>();
         while (rs.next()) {
-            docs.add(new Doctors(rs));
+            docs.add(new DoctorDto(rs));
         }
 
         return docs;

@@ -67,7 +67,7 @@ public class Consultations {
     }
 
     public void setConsultationTime(LocalDateTime consultationTime) {
-        this.consultationTime = consultationTime;
+        this.consultationTime = LocalDateTime.now();
     }
 
     public String getStatus() {

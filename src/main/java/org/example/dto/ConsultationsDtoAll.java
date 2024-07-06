@@ -10,10 +10,10 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 @XmlRootElement
-public class ConsultationsDto {
-  // private int consultId ;
+public class ConsultationsDtoAll {
+   private int consultId ;
     private int doctorId ;
-//   private int patientId ;
+   private int patientId ;
    private LocalDateTime requestTime;
    private LocalDateTime consultationTime ;
    private String status ;
@@ -22,22 +22,13 @@ public class ConsultationsDto {
 
     private ArrayList<LinkDto> links = new ArrayList<>();
 
-    public ConsultationsDto() {
+    public ConsultationsDtoAll() {
     }
 
-//    public ConsultationsDto(int consultId, int doctorId, int patientId, LocalDateTime requestTime, LocalDateTime consultationTime, String status, String diagnosis, int rateDoctor) {
-//        this.consultId = consultId;
-//        this.doctorId = doctorId;
-//        this.patientId = patientId;
-//        this.requestTime = requestTime;
-//        this.consultationTime = consultationTime;
-//        this.status = status;
-//        this.diagnosis = diagnosis;
-//        this.rateDoctor = rateDoctor;
-//    }
-
-    public ConsultationsDto(int doctorId, LocalDateTime requestTime, LocalDateTime consultationTime, String status, String diagnosis, int rateDoctor, ArrayList<LinkDto> links) {
+    public ConsultationsDtoAll(int consultId, int doctorId, int patientId, LocalDateTime requestTime, LocalDateTime consultationTime, String status, String diagnosis, int rateDoctor, ArrayList<LinkDto> links) {
+        this.consultId = consultId;
         this.doctorId = doctorId;
+        this.patientId = patientId;
         this.requestTime = requestTime;
         this.consultationTime = consultationTime;
         this.status = status;
@@ -46,13 +37,14 @@ public class ConsultationsDto {
         this.links = links;
     }
 
-//    public int getConsultId() {
-//        return consultId;
-//    }
-//
-//    public void setConsultId(int consultId) {
-//        this.consultId = consultId;
-//    }
+
+    public int getConsultId() {
+        return consultId;
+    }
+
+    public void setConsultId(int consultId) {
+        this.consultId = consultId;
+    }
 
     public int getDoctorId() {
         return doctorId;
@@ -62,13 +54,13 @@ public class ConsultationsDto {
         this.doctorId = doctorId;
     }
 
-//    public int getPatientId() {
-//        return patientId;
-//    }
-//
-//    public void setPatientId(int patientId) {
-//        this.patientId = patientId;
-//    }
+    public int getPatientId() {
+        return patientId;
+    }
+
+    public void setPatientId(int patientId) {
+        this.patientId = patientId;
+    }
 
     public LocalDateTime getRequestTime() {
         return requestTime;
@@ -82,8 +74,7 @@ public class ConsultationsDto {
         return consultationTime;
     }
 
-    public void setConsultationTime(LocalDateTime consultationTime) {
-        this.consultationTime = consultationTime;
+    public void setConsultationTime(LocalDateTime consultationTime) {this.consultationTime = LocalDateTime.now();;
     }
 
     public String getStatus() {
@@ -124,10 +115,10 @@ public class ConsultationsDto {
         links.add(link);
     }
 
-    public ConsultationsDto(ResultSet rs) throws SQLException {
-      //  consultId = rs.getInt("consultId");
+    public ConsultationsDtoAll(ResultSet rs) throws SQLException {
+        consultId = rs.getInt("consultId");
         doctorId = rs.getInt("doctorId");
-     //   patientId = rs.getInt("patientId");
+        patientId = rs.getInt("patientId");
         requestTime = LocalDateTime.parse(rs.getString("requestTime"));
         if(rs.getString("consultationTime").equals("")){
             consultationTime = null;
@@ -142,9 +133,9 @@ public class ConsultationsDto {
     @Override
     public String toString() {
         return "Consultations{" +
-      //          "consultId=" + consultId +
+                "consultId=" + consultId +
                 ", doctorId=" + doctorId +
-      //          ", patientId=" + patientId +
+                ", patientId=" + patientId +
                 ", requestTime=" + requestTime +
                 ", consultationTime=" + consultationTime +
                 ", status='" + status + '\'' +

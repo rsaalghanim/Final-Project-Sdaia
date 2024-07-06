@@ -116,19 +116,20 @@ public class ScheduleController {
         @Path("{schedulesId}")
         @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, "text/csv"})
         public Response updateSchedule(
-                @PathParam("schedulesId") int schedulesId, Schedules scheds) {
+                @PathParam("schedulesId") int schedulesId, SchedulesDto scheds) {
 
             try {
                 scheds.setSchedulesId(schedulesId);
                 dao.updateSched(scheds);
-                if(headers.getAcceptableMediaTypes().contains(MediaType.valueOf(MediaType.APPLICATION_XML))) {
-                    return Response
-                            .ok(scheds)
-                            .type(MediaType.APPLICATION_XML)
-                            .build();
-//
-                }
-                return Response.ok(scheds).build();
+//                if(headers.getAcceptableMediaTypes().contains(MediaType.valueOf(MediaType.APPLICATION_XML))) {
+//                    return Response
+//                            .ok(scheds)
+//                            .type(MediaType.APPLICATION_XML)
+//                            .build();
+////
+//                }
+               // return Response.ok(scheds).build();
+                return Response.ok().build();
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }

@@ -8,6 +8,7 @@ public class DoctorFilterDto {
     @QueryParam("docSpecialty") String docSpecialty;
     @QueryParam("docId") Integer docId;
     @QueryParam("docName") String docName;
+    @QueryParam("docAval") Boolean docAval;
 
     public String getDocSpecialty() {
         return docSpecialty;
@@ -31,6 +32,14 @@ public class DoctorFilterDto {
 
     public void setDocName(String docName) {
         this.docName = docName;
+    }
+
+    public Boolean getDocAval() {
+        return docAval;
+    }
+
+    public void setDocAval(Boolean docAval) {
+        this.docAval = docAval;
     }
 }
 
