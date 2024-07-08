@@ -11,6 +11,7 @@ public class ConsultFilterDto {
     @QueryParam("pendingReq") LocalDateTime pendingReq;
     @QueryParam("stat") String stat;
     @QueryParam("docId") Integer docId;
+    @QueryParam("pId") Integer pId;
 
     public String getDiagnose() {
         return diagnose;
@@ -50,6 +51,14 @@ public class ConsultFilterDto {
 
     public void setDocId(Integer docId) {
         this.docId = docId;
+    }
+
+    public Integer getpId() {
+        return pId;
+    }
+
+    public void setpId(Integer pId) {
+        this.pId = pId;
     }
 }
 

@@ -32,7 +32,7 @@ public class DoctorController {
 
     @GET
     @Path("/search")
-    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON, "text/csv"})
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public Response getAllDoctors(
             @BeanParam DoctorFilterDto filter
     ) {
@@ -46,15 +46,17 @@ public class DoctorController {
                         .type(MediaType.APPLICATION_XML)
                         .build();
 //
-            } else if (headers.getAcceptableMediaTypes().contains(MediaType.valueOf("text/csv"))) {
-                return Response
-                        .ok(docs)
-                        .type("text/csv")
-                        .build();
-            }
+//            } else if (headers.getAcceptableMediaTypes().contains(MediaType.valueOf("text/csv"))) {
+//                return Response
+//                        .ok(docs)
+//                        .type("text/csv")
+//                        .build();
+//            }
 
-            return Response
+            } return Response
                     .ok(docs, MediaType.APPLICATION_JSON)
+                    .header("Access-Control-Allow-Origin", "*")
+                    .header("Access-Control-Allow-Methods", "GET, POST, PUT")
                     .build();
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -63,7 +65,7 @@ public class DoctorController {
 
     @GET
     @Path("{doctorId}")
-    @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, "text/csv"})
+    @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 
     public Response getDoctor(
             @PathParam("doctorId") int doctorId) {
@@ -80,25 +82,25 @@ public class DoctorController {
 //
             }
            // DoctorDto dto = DoctorMapper.INSTANCE.toDocDto(docs);
-            addLinks(docs);
+       //     addLinks(docs);
 
             return Response.ok(docs).build();
-            // return jobs;
+
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
 
-    private void addLinks(DoctorDto dto) {
-        URI selfUri = uriInfo.getAbsolutePath();
-        URI empsUri = uriInfo.getAbsolutePathBuilder().path(ScheduleController.class).build();
-
-        dto.addLink(selfUri.toString(), "self");
-        dto.addLink(empsUri.toString(), "Schedules");
-    }
+//    private void addLinks(DoctorDto dto) {
+//        URI selfUri = uriInfo.getAbsolutePath();
+//        URI empsUri = uriInfo.getAbsolutePathBuilder().path(ScheduleController.class).build();
+//
+//        dto.addLink(selfUri.toString(), "self");
+//        dto.addLink(empsUri.toString(), "Schedules");
+//    }
 
     @GET
-    @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, "text/csv"})
+    @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 
     public Response getDoctorByRate(@QueryParam("rateDoctor") int rateDoctor) {
         ArrayList<DoctorDto> doctors = new ArrayList<>();
@@ -109,7 +111,7 @@ public class DoctorController {
             }
 
             return Response.ok(doctors).build();
-            // return jobs;
+
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -159,7 +161,7 @@ public class DoctorController {
 
     @GET
     @Path("/rate")
-    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON, "text/csv"})
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public Response getRateDoctors(@QueryParam("rateDoctor") int rateDoctor) {
         try {
             ArrayList<DoctorDto> doctors = dao.getRateDoctors(rateDoctor);
@@ -168,9 +170,10 @@ public class DoctorController {
             };
             if (headers.getAcceptableMediaTypes().contains(MediaType.valueOf(MediaType.APPLICATION_XML))) {
                 return Response.ok(doctor).type(MediaType.APPLICATION_XML).build();
-            } else if (headers.getAcceptableMediaTypes().contains(MediaType.valueOf("text/csv"))) {
-                return Response.ok(doctor).type("text/csv").build();
-            } else {
+//            } else if (headers.getAcceptableMediaTypes().contains(MediaType.valueOf("text/csv"))) {
+//                return Response.ok(doctor).type("text/csv").build();
+//            }
+            }else {
                 return Response.ok(doctor, MediaType.APPLICATION_JSON).build();
             }
         } catch (Exception e) {

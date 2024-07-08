@@ -13,7 +13,7 @@ import java.util.ArrayList;
 
 public class DoctorDAO {
 
-    private static final String URL = "jdbc:sqlite:C:\\Users\\dev\\IdeaProjects\\FinalProject\\hospital.db";
+   // private static final String URL = "jdbc:sqlite:C:\\Users\\dev\\IdeaProjects\\FinalProject\\hospital.db";
 
     //SEARCH for doctor ALL:
     private static final String SELECT_ALL_DOCS = "select * from DOCTORS";
@@ -123,27 +123,6 @@ public class DoctorDAO {
 
     }
 
-//    public ArrayList<DoctorDto> getAvailableDoctors(boolean schedule_is_available) throws SQLException, ClassNotFoundException {
-//        ArrayList<DoctorDto> doctorDtos = new ArrayList<>();
-//
-//        Connection conn = MCPConnection.getConn();
-//        PreparedStatement st = conn.prepareStatement(SCHEDULE_AVAILABILITY_BY_DOCTOR);
-//
-//        st.setBoolean(1, schedule_is_available);
-//
-//        try (ResultSet resultSet = st.executeQuery()) {
-//            while (resultSet.next()) {
-//                DoctorDto doctorDto = new DoctorDto(
-//                        resultSet.getInt("doctor_id"),
-//                        resultSet.getString("doctor_name"),
-//                        resultSet.getString("doctor_specialty")
-//                );
-//                doctorDtos.add(doctorDto);
-//            }
-//        }
-//
-//        return doctorDtos;
-//    }
 
 
     public ArrayList<DoctorDto> selectAllDocs(DoctorFilterDto filter) throws SQLException, ClassNotFoundException {

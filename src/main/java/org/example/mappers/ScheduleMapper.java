@@ -19,5 +19,5 @@ public interface ScheduleMapper {
 //    @Mapping(target = "departmentId", source = "deptId")
 //    @Mapping(target = "departmentName", source = "deptName")
 //    @Mapping(target = "locationId", source = "locId")
-    String toModel(SchedulesDto dto);
+    Schedules toModel(SchedulesDto dto);
 }

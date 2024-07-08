@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 public class ScheduleDAO {
 
-    private static final   String URL = "jdbc:sqlite:C:\\Users\\dev\\IdeaProjects\\FinalProject\\hospital.db";
+    //private static final   String URL = "jdbc:sqlite:C:\\Users\\dev\\IdeaProjects\\FinalProject\\hospital.db";
 
     //Doctor MANAGE availability schedule:
     private static final String UPDATE_SCHED = "update SCHEDULES set startTime = ?, endTime = ?, isAvailable = ? where schedulesId = ?";

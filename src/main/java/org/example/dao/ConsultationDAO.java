@@ -13,7 +13,7 @@ import java.util.ArrayList;
 //DAO to Access the database
 public class ConsultationDAO {
 
-    private static final   String URL = "jdbc:sqlite:C:\\Users\\dev\\IdeaProjects\\FinalProject\\hospital.db";
+    //private static final   String URL = "jdbc:sqlite:C:\\Users\\dev\\IdeaProjects\\FinalProject\\hospital.db";
     //Doctor GIVE consultation to a PENDING request:
     //Doctor RECORD a patient’s diagnosis:
     //Patient REQUEST consultation from a selected doctor:
@@ -26,6 +26,7 @@ public class ConsultationDAO {
     private static final String SELECT_CONSULT_WITH_PENDING_REQ = "select * from CONSULTATIONS where doctorId = ? AND status = ?";
 
     //Patient CHECK a consultation RESULT:
+    private static final String SELECT_RE_CONSULT = "select * from CONSULTATIONS where patientId = ?";
     private static final String SELECT_ALL_CONSULT = "select * from CONSULTATIONS";
 
     //Patient RATE a doctor Or from INSERT:
@@ -133,15 +134,9 @@ public class ConsultationDAO {
                 st = conn.prepareStatement(SELECT_CONSULT_WITH_PENDING_REQ);
                 st.setInt(1, filter.getDocId());
                 st.setString(2, filter.getStat());
-            } else if (filter.getDiagnose() != null) {
-                st = conn.prepareStatement(SELECT_CONSULT_WITH_DIAGNOSE);
-                st.setString(1, filter.getDiagnose());
-            } else if (filter.getPendingReq() != null) {
-                st = conn.prepareStatement(SELECT_CONSULT_WITH_PENDING_REQ);
-                st.setString(1, filter.getPendingReq().toString());
-            } else if (filter.getRate() != null) {
-                st = conn.prepareStatement(SELECT_RATE);
-                st.setInt(1, filter.getRate());
+            } else if (filter.getpId()!= null) {
+                st = conn.prepareStatement(SELECT_RE_CONSULT);
+                st.setInt(1, filter.getpId());
             } else if (filter.getStat() != null) {
                 st = conn.prepareStatement(SELECT_CONSULT_WITH_STAT);
                 st.setString(1, filter.getStat());

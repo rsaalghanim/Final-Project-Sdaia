@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 public class MedicalReportDAO {
 
-    private static final   String URL = "jdbc:sqlite:C:\\Users\\dev\\IdeaProjects\\FinalProject\\hospital.db";
+   // private static final   String URL = "jdbc:sqlite:C:\\Users\\dev\\IdeaProjects\\FinalProject\\hospital.db";
 
     //Doctor SEARCH patients’ medical records:
     private static final String SELECT_MED_WITH_PATIENT = "select * from MEDICAL_REPORTS where patientId = ?";

@@ -3,6 +3,7 @@ package org.example.models;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.time.LocalDate;
 
 public class Patients {
    private int patientId ;
@@ -10,12 +11,12 @@ public class Patients {
    private String email ;
    private String password;
    private String phone ;
-   private String dateOfBirth;
+   private LocalDate dateOfBirth;
 
     public Patients() {
     }
 
-    public Patients(int patientId, String email, String name, String password, String phone, String dateOfBirth) {
+    public Patients(int patientId, String email, String name, String password, String phone, LocalDate dateOfBirth) {
         this.patientId = patientId;
         this.email = email;
         this.name = name;
@@ -64,11 +65,11 @@ public class Patients {
         this.phone = phone;
     }
 
-    public String getDateOfBirth() {
+    public LocalDate getDateOfBirth() {
         return dateOfBirth;
     }
 
-    public void setDateOfBirth(String dateOfBirth) {
+    public void setDateOfBirth(LocalDate dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
 
@@ -78,7 +79,7 @@ public class Patients {
         email = rs.getString("email");
         password = rs.getString("password");
         phone = rs.getString("phone");
-        dateOfBirth = rs.getString("dateOfBirth");
+        dateOfBirth = LocalDate.parse(rs.getString("dateOfBirth"));
 
         ResultSetMetaData mt = rs.getMetaData();
 //        if(mt.getColumnCount() > 10) {

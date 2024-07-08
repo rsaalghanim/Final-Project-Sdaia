@@ -26,7 +26,7 @@ public class ConsultationController {
 
     //GET annotation for all consultation
         @GET
-        @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON,"text/csv"})
+        @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
         public Response getAllConsults(
                 @BeanParam ConsultFilterDto filter
                 ) {
@@ -38,16 +38,16 @@ public class ConsultationController {
                             .ok(cons)
                             .type(MediaType.APPLICATION_XML)
                             .build();
-//
-                }else if(headers.getAcceptableMediaTypes().contains(MediaType.valueOf("text/csv"))) {
-                    return Response
-                            .ok(cons)
-                            .type("text/csv")
-                            .build();
-                }
+//                }else if(headers.getAcceptableMediaTypes().contains(MediaType.valueOf("text/csv"))) {
+//                    return Response
+//                            .ok(cons)
+//                            .type("text/csv")
+//                            .build();
+//                }
 
-                return Response
+                }return Response
                         .ok(cons, MediaType.APPLICATION_JSON)
+//
                         .build();
             } catch (Exception e) {
                 throw new RuntimeException(e);
@@ -56,7 +56,7 @@ public class ConsultationController {
 
         @GET
         @Path("{consultId}")
-        @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, "text/csv"})
+        @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 
         public Response getConsults(
                 @PathParam("consultId") int consultId) {
@@ -75,7 +75,7 @@ public class ConsultationController {
                 }
 
                 ConsultationsDto dto = ConsultationMapper.INSTANCE.toConsultDto(cons);
-              addLinks(dto);
+            //  addLinks(dto);
 
                 return Response.ok(dto).build();
 
@@ -84,13 +84,13 @@ public class ConsultationController {
             }
         }
 
-        private void addLinks (ConsultationsDto dto){
-            URI selfUri = uriInfo.getAbsolutePath();
-            URI empsUri = uriInfo.getAbsolutePathBuilder().path(DoctorController.class).build();
-
-            dto.addLink(selfUri.toString(), "self");
-            dto.addLink(empsUri.toString(),"DOCTORS");
-        }
+//        private void addLinks (ConsultationsDto dto){
+//            URI selfUri = uriInfo.getAbsolutePath();
+//            URI empsUri = uriInfo.getAbsolutePathBuilder().path(DoctorController.class).build();
+//
+//            dto.addLink(selfUri.toString(), "self");
+//            dto.addLink(empsUri.toString(),"DOCTORS");
+//        }
 
         @POST
        @Consumes({MediaType.APPLICATION_XML,MediaType.APPLICATION_JSON})
@@ -100,11 +100,11 @@ public class ConsultationController {
                 //Consultations cons = ConsultationMapper.INSTANCE.toModel(dto);
                 Consultations cons = ConsultationMapper.INSTANCE.toModelAll(dtoAll);
                 dao.insertConsult(cons);
-                URI uri = uriInfo.getAbsolutePathBuilder().path(cons.getConsultId()+"").build();
+
+                ConsultationsDtoAll dtoAll1 =ConsultationMapper.INSTANCE.toDto(cons);
+                URI uri = uriInfo.getAbsolutePathBuilder().path(dtoAll1.getConsultId()+"").build();
                 return Response
                         .created(uri)
-//                        .cookie(cookie)
-//                        .header("Created by", "Ragad")
                         .build();
             } catch (Exception e) {
                 throw new RuntimeException(e);

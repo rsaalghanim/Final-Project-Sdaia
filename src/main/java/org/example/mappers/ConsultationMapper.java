@@ -15,5 +15,9 @@ public interface ConsultationMapper {
     ConsultationsDto toConsultDto(Consultations c);
 
     Consultations toModelAll(ConsultationsDtoAll dtoAll);
+
+    ConsultationsDtoAll toDto(Consultations c);
+
+
     Consultations toModel(ConsultationsDto dto);
 }

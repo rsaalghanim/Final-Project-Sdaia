@@ -13,14 +13,14 @@ import java.util.ArrayList;
 public class ConsultationsDto {
   // private int consultId ;
     private int doctorId ;
-//   private int patientId ;
+   private int patientId ;
    private LocalDateTime requestTime;
    private LocalDateTime consultationTime ;
    private String status ;
    private String diagnosis;
    private int rateDoctor ;
 
-    private ArrayList<LinkDto> links = new ArrayList<>();
+  //  private ArrayList<LinkDto> links = new ArrayList<>();
 
     public ConsultationsDto() {
     }
@@ -36,15 +36,26 @@ public class ConsultationsDto {
 //        this.rateDoctor = rateDoctor;
 //    }
 
-    public ConsultationsDto(int doctorId, LocalDateTime requestTime, LocalDateTime consultationTime, String status, String diagnosis, int rateDoctor, ArrayList<LinkDto> links) {
+//    public ConsultationsDto(int doctorId, LocalDateTime requestTime, LocalDateTime consultationTime, String status, String diagnosis, int rateDoctor, ArrayList<LinkDto> links) {
+//        this.doctorId = doctorId;
+//        this.requestTime = requestTime;
+//        this.consultationTime = consultationTime;
+//        this.status = status;
+//        this.diagnosis = diagnosis;
+//        this.rateDoctor = rateDoctor;
+//        this.links = links;
+//    }
+
+    public ConsultationsDto(int doctorId, int patientId, LocalDateTime requestTime, LocalDateTime consultationTime, String status, String diagnosis, int rateDoctor) {
         this.doctorId = doctorId;
+        this.patientId = patientId;
         this.requestTime = requestTime;
         this.consultationTime = consultationTime;
         this.status = status;
         this.diagnosis = diagnosis;
         this.rateDoctor = rateDoctor;
-        this.links = links;
     }
+
 
 //    public int getConsultId() {
 //        return consultId;
@@ -62,13 +73,13 @@ public class ConsultationsDto {
         this.doctorId = doctorId;
     }
 
-//    public int getPatientId() {
-//        return patientId;
-//    }
-//
-//    public void setPatientId(int patientId) {
-//        this.patientId = patientId;
-//    }
+    public int getPatientId() {
+        return patientId;
+    }
+
+    public void setPatientId(int patientId) {
+        this.patientId = patientId;
+    }
 
     public LocalDateTime getRequestTime() {
         return requestTime;
@@ -110,24 +121,24 @@ public class ConsultationsDto {
         this.rateDoctor = rateDoctor;
     }
 
-    public ArrayList<LinkDto> getLinks() {
-        return links;
-    }
+//    public ArrayList<LinkDto> getLinks() {
+//        return links;
+//    }
 
 
-    @XmlElementWrapper
-    @XmlElement(name = "link")
-    public void addLink(String url, String rel) {
-        LinkDto link = new LinkDto();
-        link.setLink(url);
-        link.setRel(rel);
-        links.add(link);
-    }
+//    @XmlElementWrapper
+//    @XmlElement(name = "link")
+//    public void addLink(String url, String rel) {
+//        LinkDto link = new LinkDto();
+//        link.setLink(url);
+//        link.setRel(rel);
+//        links.add(link);
+//    }
 
     public ConsultationsDto(ResultSet rs) throws SQLException {
       //  consultId = rs.getInt("consultId");
         doctorId = rs.getInt("doctorId");
-     //   patientId = rs.getInt("patientId");
+        patientId = rs.getInt("patientId");
         requestTime = LocalDateTime.parse(rs.getString("requestTime"));
         if(rs.getString("consultationTime").equals("")){
             consultationTime = null;
@@ -144,7 +155,7 @@ public class ConsultationsDto {
         return "Consultations{" +
       //          "consultId=" + consultId +
                 ", doctorId=" + doctorId +
-      //          ", patientId=" + patientId +
+                ", patientId=" + patientId +
                 ", requestTime=" + requestTime +
                 ", consultationTime=" + consultationTime +
                 ", status='" + status + '\'' +
