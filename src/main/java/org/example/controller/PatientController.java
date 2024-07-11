@@ -44,6 +44,8 @@ public class PatientController {
 
                 return Response
                         .ok(pats, MediaType.APPLICATION_JSON)
+                        .header("Access-Control-Allow-Origin", "*")
+                        .header("Access-Control-Allow-Methods", "GET, POST, PUT")
                         .build();
             } catch (Exception e) {
                 throw new RuntimeException(e);

@@ -27,6 +27,8 @@ public class ConsultationDAO {
 
     //Patient CHECK a consultation RESULT:
     private static final String SELECT_RE_CONSULT = "select * from CONSULTATIONS where patientId = ?";
+
+    private static final String SELECT_RES_CONSULT ="select * from CONSULTATIONS where patientId = ? ORDER BY consultationTime DESC";
     private static final String SELECT_ALL_CONSULT = "select * from CONSULTATIONS";
 
     //Patient RATE a doctor Or from INSERT:
@@ -135,7 +137,7 @@ public class ConsultationDAO {
                 st.setInt(1, filter.getDocId());
                 st.setString(2, filter.getStat());
             } else if (filter.getpId()!= null) {
-                st = conn.prepareStatement(SELECT_RE_CONSULT);
+                st = conn.prepareStatement(SELECT_RES_CONSULT);
                 st.setInt(1, filter.getpId());
             } else if (filter.getStat() != null) {
                 st = conn.prepareStatement(SELECT_CONSULT_WITH_STAT);
